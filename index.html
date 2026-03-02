@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>University Management System - Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #667eea;
+        }
+        h1 {
+            color: #667eea;
+            font-size: 2.8em;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            color: #666;
+            font-size: 1.2em;
+        }
+        .badges {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        .badge {
+            background: #667eea;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+        .alert {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 5px;
+        }
+        .alert-title {
+            font-weight: bold;
+            color: #856404;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        .section {
+            margin: 40px 0;
+        }
+        h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 2em;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 10px;
+        }
+        h3 {
+            color: #374151;
+            margin: 25px 0 15px 0;
+            font-size: 1.4em;
+        }
+        .card {
+            background: #f9fafb;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            border-left: 4px solid #667eea;
+        }
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .code-block code {
+            color: #e2e8f0;
+        }
+        .method {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.85em;
+            margin-right: 10px;
+        }
+        .post { background: #10b981; color: white; }
+        .get { background: #3b82f6; color: white; }
+        .endpoint {
+            font-family: monospace;
+            color: #667eea;
+            font-weight: bold;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .feature {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .feature h4 {
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 10px;
+            text-decoration: none;
+            margin: 10px;
+            font-weight: bold;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+        .btn-secondary {
+            background: #6b7280;
+        }
+        .diagram {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            margin: 20px 0;
+            font-family: monospace;
+            font-size: 16px;
+            line-height: 2;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        th {
+            background: #667eea;
+            color: white;
+            font-weight: bold;
+        }
+        tr:hover {
+            background: #f9fafb;
+        }
+        .links {
+            text-align: center;
+            margin: 40px 0;
+        }
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 2px solid #e5e7eb;
+            color: #6b7280;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎓 University Management System</h1>
+            <p class="subtitle">REST API для управления университетской системой на Spring Boot</p>
+            <div class="badges">
+                <span class="badge">Java 17</span>
+                <span class="badge">Spring Boot 3.2.0</span>
+                <span class="badge">JPA / Hibernate</span>
+                <span class="badge">H2 Database</span>
+                <span class="badge">Maven</span>
+            </div>
+        </header>
+
+        <div class="alert">
+            <div class="alert-title">⚠️ Важная информация о GitHub Pages</div>
+            <p>Это <strong>Spring Boot приложение</strong>, которое требует Java сервер для запуска. GitHub Pages может хостить только статические HTML страницы.</p>
+            <p style="margin-top: 10px;">Чтобы запустить полнофункциональное приложение, следуйте инструкциям по установке ниже.</p>
+        </div>
+
+        <section class="section">
+            <h2>📋 О проекте</h2>
+            <p>Полнофункциональная система управления университетом с поддержкой:</p>
+            <div class="feature-grid">
+                <div class="feature">
+                    <h4>👨‍🎓 Студенты</h4>
+                    <p>С персональными профилями (One-to-One)</p>
+                </div>
+                <div class="feature">
+                    <h4>📚 Курсы</h4>
+                    <p>С множественными уроками (One-to-Many)</p>
+                </div>
+                <div class="feature">
+                    <h4>🔗 Назначения</h4>
+                    <p>Студентов на курсы (Many-to-Many)</p>
+                </div>
+                <div class="feature">
+                    <h4>💾 Cascade</h4>
+                    <p>Автоматическое сохранение связанных данных</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>🗄️ Модель базы данных</h2>
+            <div class="diagram">
+                <strong>Student</strong> (1) ←→ (1) <strong>StudentProfile</strong><br>
+                <strong>Student</strong> (M) ←→ (M) <strong>Course</strong><br>
+                <strong>Course</strong> (1) ←→ (M) <strong>Lesson</strong>
+            </div>
+
+            <h3>Entities</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Entity</th>
+                        <th>Поля</th>
+                        <th>Связи</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Student</strong></td>
+                        <td>id, firstName, lastName, email (unique)</td>
+                        <td>@OneToOne с StudentProfile<br>@ManyToMany с Course</td>
+                    </tr>
+                    <tr>
+                        <td><strong>StudentProfile</strong></td>
+                        <td>id, address, phone, birthDate</td>
+                        <td>@OneToOne с Student</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Course</strong></td>
+                        <td>id, title, credits</td>
+                        <td>@ManyToMany с Student<br>@OneToMany с Lesson</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Lesson</strong></td>
+                        <td>id, topic, duration</td>
+                        <td>@ManyToOne с Course</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>🚀 Установка и запуск</h2>
+
+            <h3>Предварительные требования</h3>
+            <div class="card">
+                <ul style="list-style-position: inside;">
+                    <li>Java 17 или выше</li>
+                    <li>Maven 3.6+ (или используйте встроенный в IDE)</li>
+                    <li>IntelliJ IDEA (рекомендуется)</li>
+                </ul>
+            </div>
+
+            <h3>Быстрый старт</h3>
+
+            <div class="card">
+                <strong>1. Клонируйте репозиторий</strong>
+                <div class="code-block"><code>git clone https://github.com/lidimitrii/midterm.git
+cd midterm</code></div>
+            </div>
+
+            <div class="card">
+                <strong>2. Соберите проект</strong>
+                <div class="code-block"><code>mvn clean install</code></div>
+                <p style="margin-top: 10px;">Или в IntelliJ IDEA: View → Tool Windows → Maven → Reload All Maven Projects 🔄</p>
+            </div>
+
+            <div class="card">
+                <strong>3. Установите Lombok Plugin (IntelliJ IDEA)</strong>
+                <p>File → Settings → Plugins → Marketplace → Найдите "Lombok" → Install → Restart</p>
+            </div>
+
+            <div class="card">
+                <strong>4. Включите Annotation Processing</strong>
+                <p>File → Settings → Build, Execution, Deployment → Compiler → Annotation Processors</p>
+                <p>✓ Enable annotation processing → OK</p>
+            </div>
+
+            <div class="card">
+                <strong>5. Запустите приложение</strong>
+                <div class="code-block"><code>mvn spring-boot:run</code></div>
+                <p style="margin-top: 10px;">Или в IntelliJ IDEA: ПКМ на UniversityApplication.java → Run</p>
+            </div>
+
+            <div class="card">
+                <strong>6. Откройте браузер</strong>
+                <div class="code-block"><code>http://localhost:8080</code></div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>🔌 REST API Endpoints</h2>
+
+            <h3>Student API</h3>
+
+            <div class="card">
+                <span class="method post">POST</span>
+                <span class="endpoint">/students</span>
+                <p style="margin-top: 10px;">Создать студента с профилем</p>
+                <div class="code-block"><code>{
+  "firstName": "Иван",
+  "lastName": "Иванов",
+  "email": "ivan@example.com",
+  "profile": {
+    "address": "Москва, ул. Примерная, 1",
+    "phone": "+7 999 123-45-67",
+    "birthDate": "2000-01-15"
+  }
+}</code></div>
+            </div>
+
+            <div class="card">
+                <span class="method post">POST</span>
+                <span class="endpoint">/students/{studentId}/courses/{courseId}</span>
+                <p style="margin-top: 10px;">Назначить студента на курс</p>
+            </div>
+
+            <div class="card">
+                <span class="method get">GET</span>
+                <span class="endpoint">/students/{id}</span>
+                <p style="margin-top: 10px;">Получить студента со всеми связями</p>
+            </div>
+
+            <h3>Course API</h3>
+
+            <div class="card">
+                <span class="method post">POST</span>
+                <span class="endpoint">/courses</span>
+                <p style="margin-top: 10px;">Создать курс с уроками</p>
+                <div class="code-block"><code>{
+  "title": "Java Programming",
+  "credits": 5,
+  "lessons": [
+    {
+      "topic": "Introduction to Java",
+      "duration": 90
+    },
+    {
+      "topic": "OOP Principles",
+      "duration": 120
+    }
+  ]
+}</code></div>
+            </div>
+
+            <div class="card">
+                <span class="method post">POST</span>
+                <span class="endpoint">/courses/{courseId}/lessons</span>
+                <p style="margin-top: 10px;">Добавить уроки к существующему курсу</p>
+            </div>
+
+            <div class="card">
+                <span class="method get">GET</span>
+                <span class="endpoint">/courses/{id}</span>
+                <p style="margin-top: 10px;">Получить курс со всеми уроками</p>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>✅ Реализованные требования</h2>
+
+            <div class="card">
+                <h4>Task 1: Entity Mapping ✓</h4>
+                <ul style="list-style-position: inside; margin-top: 10px;">
+                    <li>✅ Все JPA аннотации (@OneToOne, @ManyToMany, @OneToMany)</li>
+                    <li>✅ Правильная настройка mappedBy, @JoinColumn, @JoinTable</li>
+                    <li>✅ Cascade types настроены корректно</li>
+                    <li>✅ Предотвращение JSON рекурсии (@JsonManagedReference, @JsonBackReference)</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h4>Task 2: Repository Layer ✓</h4>
+                <ul style="list-style-position: inside; margin-top: 10px;">
+                    <li>✅ StudentRepository extends JpaRepository</li>
+                    <li>✅ CourseRepository extends JpaRepository</li>
+                    <li>✅ LessonRepository extends JpaRepository</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h4>Task 3: Data Persistence Logic ✓</h4>
+                <ul style="list-style-position: inside; margin-top: 10px;">
+                    <li>✅ Сохранение Student → автоматически сохраняет StudentProfile</li>
+                    <li>✅ Назначение Student на Course с bidirectional связью</li>
+                    <li>✅ Добавление Lessons к Course с cascade</li>
+                    <li>✅ Удаление Student → Profile удаляется, Course остаётся</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h4>Task 4: REST API ✓</h4>
+                <ul style="list-style-position: inside; margin-top: 10px;">
+                    <li>✅ POST /students</li>
+                    <li>✅ POST /students/{studentId}/courses/{courseId}</li>
+                    <li>✅ GET /students/{id}</li>
+                    <li>✅ POST /courses</li>
+                    <li>✅ POST /courses/{courseId}/lessons</li>
+                    <li>✅ GET /courses/{id}</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>🔧 Технологии</h2>
+            <div class="feature-grid">
+                <div class="feature">
+                    <h4>Java 17</h4>
+                    <p>Современная версия Java с новыми возможностями</p>
+                </div>
+                <div class="feature">
+                    <h4>Spring Boot 3.2.0</h4>
+                    <p>Framework для создания REST API</p>
+                </div>
+                <div class="feature">
+                    <h4>Spring Data JPA</h4>
+                    <p>Работа с базой данных через Hibernate</p>
+                </div>
+                <div class="feature">
+                    <h4>H2 Database</h4>
+                    <p>Встроенная база данных в памяти</p>
+                </div>
+                <div class="feature">
+                    <h4>Lombok</h4>
+                    <p>Уменьшение boilerplate кода</p>
+                </div>
+                <div class="feature">
+                    <h4>Maven</h4>
+                    <p>Система сборки и управления зависимостями</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="links">
+            <a href="https://github.com/lidimitrii/midterm" class="btn">📦 GitHub Repository</a>
+            <a href="https://github.com/lidimitrii/midterm/archive/refs/heads/main.zip" class="btn btn-secondary">⬇️ Download ZIP</a>
+        </div>
+
+        <footer>
+            <p><strong>University Management System</strong></p>
+            <p>Создано как учебный проект</p>
+            <p style="margin-top: 10px;">© 2026 Dmitrii Li</p>
+        </footer>
+    </div>
+</body>
+</html>
+
