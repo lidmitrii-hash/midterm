@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>University Management System - Тестирование API</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .status {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .status h2 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        .status-online { background: #10b981; }
+        .status-offline { background: #ef4444; }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .card h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #374151;
+            font-weight: 500;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e5e7eb;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        button:active {
+            transform: translateY(0);
+        }
+        .response {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f3f4f6;
+            border-radius: 5px;
+            font-size: 13px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .response pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .success {
+            background: #d1fae5;
+            color: #065f46;
+            border-left: 4px solid #10b981;
+        }
+        .error {
+            background: #fee2e2;
+            color: #991b1b;
+            border-left: 4px solid #ef4444;
+        }
+        .links {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .links h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        .link-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            margin-bottom: 10px;
+            background: #f9fafb;
+            border-radius: 5px;
+            text-decoration: none;
+            color: #374151;
+            transition: background 0.2s;
+        }
+        .link-item:hover {
+            background: #e5e7eb;
+        }
+        .link-item span {
+            margin-right: 10px;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎓 University Management System</h1>
+
+        <div class="status">
+            <h2>Статус сервера</h2>
+            <div id="serverStatus">
+                <span class="status-indicator status-offline"></span>
+                Проверка подключения...
+            </div>
+        </div>
+
+        <div class="grid">
+            <!-- Создать студента -->
+            <div class="card">
+                <h3>👨‍🎓 Создать студента</h3>
+                <div class="form-group">
+                    <label>Имя:</label>
+                    <input type="text" id="firstName" placeholder="Иван">
+                </div>
+                <div class="form-group">
+                    <label>Фамилия:</label>
+                    <input type="text" id="lastName" placeholder="Иванов">
+                </div>
+                <div class="form-group">
+                    <label>Email:</label>
+                    <input type="email" id="email" placeholder="ivan@example.com">
+                </div>
+                <div class="form-group">
+                    <label>Адрес:</label>
+                    <input type="text" id="address" placeholder="Москва, ул. Примерная, 1">
+                </div>
+                <div class="form-group">
+                    <label>Телефон:</label>
+                    <input type="text" id="phone" placeholder="+7 999 123-45-67">
+                </div>
+                <div class="form-group">
+                    <label>Дата рождения:</label>
+                    <input type="date" id="birthDate" value="2000-01-15">
+                </div>
+                <button onclick="createStudent()">Создать студента</button>
+                <div id="studentResponse" class="response" style="display:none;"></div>
+            </div>
+
+            <!-- Создать курс -->
+            <div class="card">
+                <h3>📚 Создать курс</h3>
+                <div class="form-group">
+                    <label>Название курса:</label>
+                    <input type="text" id="courseTitle" placeholder="Java Programming">
+                </div>
+                <div class="form-group">
+                    <label>Кредиты:</label>
+                    <input type="number" id="credits" placeholder="5" value="5">
+                </div>
+                <div class="form-group">
+                    <label>Уроки (JSON):</label>
+                    <textarea id="lessons" rows="6" placeholder='[{"topic": "Введение", "duration": 90}]'>[
+  {"topic": "Introduction to Java", "duration": 90},
+  {"topic": "OOP Principles", "duration": 120}
+]</textarea>
+                </div>
+                <button onclick="createCourse()">Создать курс</button>
+                <div id="courseResponse" class="response" style="display:none;"></div>
+            </div>
+
+            <!-- Назначить студента на курс -->
+            <div class="card">
+                <h3>🔗 Назначить студента на курс</h3>
+                <div class="form-group">
+                    <label>ID студента:</label>
+                    <input type="number" id="assignStudentId" placeholder="1">
+                </div>
+                <div class="form-group">
+                    <label>ID курса:</label>
+                    <input type="number" id="assignCourseId" placeholder="1">
+                </div>
+                <button onclick="assignToCourse()">Назначить</button>
+                <div id="assignResponse" class="response" style="display:none;"></div>
+            </div>
+
+            <!-- Получить студента -->
+            <div class="card">
+                <h3>🔍 Получить студента</h3>
+                <div class="form-group">
+                    <label>ID студента:</label>
+                    <input type="number" id="getStudentId" placeholder="1">
+                </div>
+                <button onclick="getStudent()">Получить данные</button>
+                <div id="getStudentResponse" class="response" style="display:none;"></div>
+            </div>
+
+            <!-- Получить курс -->
+            <div class="card">
+                <h3>🔍 Получить курс</h3>
+                <div class="form-group">
+                    <label>ID курса:</label>
+                    <input type="number" id="getCourseId" placeholder="1">
+                </div>
+                <button onclick="getCourse()">Получить данные</button>
+                <div id="getCourseResponse" class="response" style="display:none;"></div>
+            </div>
+
+            <!-- Добавить уроки -->
+            <div class="card">
+                <h3>➕ Добавить уроки к курсу</h3>
+                <div class="form-group">
+                    <label>ID курса:</label>
+                    <input type="number" id="addLessonsCourseId" placeholder="1">
+                </div>
+                <div class="form-group">
+                    <label>Уроки (JSON):</label>
+                    <textarea id="newLessons" rows="4" placeholder='[{"topic": "Новый урок", "duration": 60}]'>[
+  {"topic": "Streams API", "duration": 90}
+]</textarea>
+                </div>
+                <button onclick="addLessons()">Добавить уроки</button>
+                <div id="addLessonsResponse" class="response" style="display:none;"></div>
+            </div>
+        </div>
+
+        <div class="links">
+            <h3>🔗 Полезные ссылки</h3>
+            <a href="http://localhost:8080/h2-console" target="_blank" class="link-item">
+                <span>🗄️</span>
+                <div>
+                    <strong>H2 Database Console</strong><br>
+                    <small>JDBC URL: jdbc:h2:mem:universitydb | User: sa | Password: (пустой)</small>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:8080';
+
+        // Проверка статуса сервера
+        async function checkServer() {
+            try {
+                const response = await fetch(`${API_URL}/h2-console`, { method: 'HEAD' });
+                document.getElementById('serverStatus').innerHTML =
+                    '<span class="status-indicator status-online"></span>Сервер работает ✓';
+            } catch (error) {
+                document.getElementById('serverStatus').innerHTML =
+                    '<span class="status-indicator status-offline"></span>Сервер не запущен ✗ (Запустите UniversityApplication в IntelliJ IDEA)';
+            }
+        }
+
+        // Создать студента
+        async function createStudent() {
+            const data = {
+                firstName: document.getElementById('firstName').value,
+                lastName: document.getElementById('lastName').value,
+                email: document.getElementById('email').value,
+                profile: {
+                    address: document.getElementById('address').value,
+                    phone: document.getElementById('phone').value,
+                    birthDate: document.getElementById('birthDate').value
+                }
+            };
+
+            try {
+                const response = await fetch(`${API_URL}/students`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                const result = await response.json();
+                showResponse('studentResponse', result, true);
+            } catch (error) {
+                showResponse('studentResponse', { error: error.message }, false);
+            }
+        }
+
+        // Создать курс
+        async function createCourse() {
+            try {
+                const lessons = JSON.parse(document.getElementById('lessons').value);
+                const data = {
+                    title: document.getElementById('courseTitle').value,
+                    credits: parseInt(document.getElementById('credits').value),
+                    lessons: lessons
+                };
+
+                const response = await fetch(`${API_URL}/courses`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                const result = await response.json();
+                showResponse('courseResponse', result, true);
+            } catch (error) {
+                showResponse('courseResponse', { error: error.message }, false);
+            }
+        }
+
+        // Назначить студента на курс
+        async function assignToCourse() {
+            const studentId = document.getElementById('assignStudentId').value;
+            const courseId = document.getElementById('assignCourseId').value;
+
+            try {
+                const response = await fetch(`${API_URL}/students/${studentId}/courses/${courseId}`, {
+                    method: 'POST'
+                });
+                const result = await response.json();
+                showResponse('assignResponse', result, true);
+            } catch (error) {
+                showResponse('assignResponse', { error: error.message }, false);
+            }
+        }
+
+        // Получить студента
+        async function getStudent() {
+            const studentId = document.getElementById('getStudentId').value;
+
+            try {
+                const response = await fetch(`${API_URL}/students/${studentId}`);
+                const result = await response.json();
+                showResponse('getStudentResponse', result, true);
+            } catch (error) {
+                showResponse('getStudentResponse', { error: error.message }, false);
+            }
+        }
+
+        // Получить курс
+        async function getCourse() {
+            const courseId = document.getElementById('getCourseId').value;
+
+            try {
+                const response = await fetch(`${API_URL}/courses/${courseId}`);
+                const result = await response.json();
+                showResponse('getCourseResponse', result, true);
+            } catch (error) {
+                showResponse('getCourseResponse', { error: error.message }, false);
+            }
+        }
+
+        // Добавить уроки
+        async function addLessons() {
+            const courseId = document.getElementById('addLessonsCourseId').value;
+
+            try {
+                const lessons = JSON.parse(document.getElementById('newLessons').value);
+                const response = await fetch(`${API_URL}/courses/${courseId}/lessons`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(lessons)
+                });
+                const result = await response.json();
+                showResponse('addLessonsResponse', result, true);
+            } catch (error) {
+                showResponse('addLessonsResponse', { error: error.message }, false);
+            }
+        }
+
+        // Показать ответ
+        function showResponse(elementId, data, success) {
+            const element = document.getElementById(elementId);
+            element.style.display = 'block';
+            element.className = success ? 'response success' : 'response error';
+            element.innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+        }
+
+        // Проверка при загрузке страницы
+        checkServer();
+        setInterval(checkServer, 5000); // Проверять каждые 5 секунд
+    </script>
+</body>
+</html>
+
